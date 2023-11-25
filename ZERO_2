@@ -1,0 +1,41 @@
+#include <bits/stdc++.h>
+#define file(name)							\
+	if (fopen(name".inp", "r"))  {			\
+		freopen(name".inp", "r", stdin);	\
+		freopen(name".out", "w", stdout);	\
+	}
+using namespace std;
+const int maxn = 1e6 + 7;
+int n, res = -2,l = 0,h = 0, a[maxn];
+pair <int , int > cnt[maxn];
+void compress(int *a) {
+	vector < int > b(a,a+n+1);
+	sort(b.begin(),b.end());
+	for (int i = 0; i <= n; ++i) a[i] = lower_bound(b.begin(),b.end(),a[i]) - b.begin() + 1;
+}
+signed main(void) {
+
+	file("ZERO")
+	ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	cin >> n; a[0] = 0;
+	for (int i = 1; i <= n; ++i) {
+		cin >> a[i];
+		a[i] += a[i-1];
+	}
+
+	compress(a);
+	for (int i = 0; i <= n; ++i) {
+
+		if (cnt[a[i]].first == 0) cnt[a[i]].first = i+1;
+		cnt[a[i]].second = i+1;
+	}
+	for (int i = 0; i <= n; ++i) {
+		if (cnt[a[i]].second - cnt[a[i]].first > res) {
+			res = cnt[a[i]].second - cnt[a[i]].first;
+			//l = cnt[a[i]].first, h = cnt[a[i]].second;
+		}
+	}
+
+	cout <<res;
+	return 0;
+}
